@@ -1,5 +1,8 @@
 # Walking-Running-292
 
+## Video-Link
+https://youtu.be/yd7NedTEr9g
+
 A data-driven project that classifies human motion as either walking or running using smartphone accelerometer data. This project involves data preprocessing, feature extraction, model training, and a simple desktop application interface for real-time prediction.
 
 ## 📂 Project Structure
