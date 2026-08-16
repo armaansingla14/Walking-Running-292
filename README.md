@@ -1,78 +1,82 @@
-# Walking-Running-292
+# 🚶🤸 Walking vs. Jumping Classifier
 
-## Video-Link
-https://youtu.be/yd7NedTEr9g
+![Python](https://img.shields.io/badge/Python-3.8+-3776AB?logo=python&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?logo=scikitlearn&logoColor=white)
+![PyQt5](https://img.shields.io/badge/GUI-PyQt5-41CD52?logo=qt&logoColor=white)
+![HDF5](https://img.shields.io/badge/Storage-HDF5-0298c3)
 
-A data-driven project that classifies human motion as either walking or running using smartphone accelerometer data. This project involves data preprocessing, feature extraction, model training, and a simple desktop application interface for real-time prediction.
+A machine-learning project that classifies human motion as **walking** or **jumping** from smartphone accelerometer data. It covers the full pipeline — raw sensor collection, HDF5 storage, signal preprocessing, feature engineering, model training, and a **desktop app** that predicts on new recordings.
 
-## 📂 Project Structure
+🎥 **Demo:** https://youtu.be/yd7NedTEr9g
+
+---
+
+## 🧠 How It Works
 
 ```
-├── raw-data/                # Raw CSV files collected from smartphone sensors
-├── dataset.hdf5             # Preprocessed HDF5 data
-├── datainothdf5.py          # Converts CSV data to HDF5 format
-├── Data_visualization.py    # Visualizes accelerometer signals
-├── train_test_model.py      # Trains and tests classification models
-├── model.pkl                # Trained ML model (saved)
-├── scaler.pkl               # Data scaler (normalization)
-├── feature_extract_norm.py  # Feature extraction and normalization
-├── processor.py             # Pipeline to load, transform, and predict
-├── desktop-app.py           # Simple PyQt5 GUI for prediction
-└── 292ProjectGroup49.zip    # Final submission package
+Phone accelerometer CSVs ──▶ HDF5 store ──▶ preprocess ──▶ features ──▶ classifier ──▶ Walking / Jumping
 ```
 
-## ⚙️ Technologies Used
+1. **Collect** — three-axis linear-acceleration data is recorded on a phone (in pocket, hand, and backpack positions) for both walking and jumping.
+2. **Store** — [`dataintohdf5.py`](dataintohdf5.py) consolidates the raw CSVs into a single **HDF5** dataset (`dataset.hdf5`) organized by member → activity.
+3. **Preprocess** — [`processor.py`](processor.py) fills gaps via interpolation and smooths each axis with a moving-average filter.
+4. **Feature engineering** — [`feature_extract_norm.py`](feature_extract_norm.py) segments the signal into windows and extracts per-axis statistics (mean, std, min, max, range, median, variance, skewness, kurtosis, RMS), then normalizes them.
+5. **Train** — [`train_test_model.py`](train_test_model.py) trains a classifier and saves it to `model.pkl` (with the fitted scaler in `scaler.pkl`).
+6. **Predict** — [`desktop-app.py`](desktop-app.py), a PyQt5 GUI, loads a CSV, splits it into 5-second windows, and labels each as **Walking** or **Jumping**.
 
-- **Python**
-- **NumPy**, **Pandas**
-- **Scikit-learn**
-- **Matplotlib**
-- **PyQt5**
-- **HDF5 (h5py)**
+Signals can be explored visually with [`Data_visulization.py`](Data_visulization.py).
 
-## 🧠 Workflow
+---
 
-1. **Data Conversion**  
-   `datainothdf5.py` converts raw CSVs into an HDF5 format for efficient processing.
+## 🛠️ Tech Stack
 
-2. **Visualization**  
-   `Data_visualization.py` helps explore the raw signal patterns.
+- **Python** · **NumPy** · **Pandas**
+- **scikit-learn** (classification + scaling)
+- **SciPy** (skewness / kurtosis features)
+- **Matplotlib** (visualization)
+- **PyQt5** (desktop GUI)
+- **h5py** (HDF5 storage)
 
-3. **Feature Engineering**  
-   `feature_extract_norm.py` extracts statistical features (mean, variance, etc.) and normalizes the data.
+---
 
-4. **Model Training**  
-   `train_test_model.py` trains a classification model and saves it to `model.pkl`.
+## 🗂️ Project Structure
 
-5. **Prediction App**  
-   `desktop-app.py` allows users to make predictions on new data through a simple GUI.
+```
+├── raw-data/                # Raw accelerometer CSVs (walking & jumping, multiple carry positions)
+├── dataset.hdf5             # Consolidated HDF5 dataset
+├── dataintohdf5.py          # CSV → HDF5 loader
+├── processor.py             # Interpolation + moving-average smoothing
+├── feature_extract_norm.py  # Windowing, feature extraction & normalization
+├── train_test_model.py      # Model training / evaluation
+├── model.pkl                # Trained classifier
+├── scaler.pkl               # Fitted feature scaler
+├── Data_visulization.py     # Signal visualization
+└── desktop-app.py           # PyQt5 prediction GUI
+```
+
+---
 
 ## 🚀 How to Run
 
 ```bash
-# Convert CSV data to HDF5
-python datainothdf5.py
+# 1. Build the HDF5 dataset from raw CSVs
+python dataintohdf5.py
 
-# Visualize raw signals (optional)
-python Data_visualization.py
+# 2. (optional) Visualize raw signals
+python Data_visulization.py
 
-# Train model
+# 3. Train the model
 python train_test_model.py
 
-# Launch desktop app
+# 4. Launch the desktop classifier
 python desktop-app.py
 ```
 
-## 📈 Output
+In the app, load a CSV of accelerometer readings and it will classify each 5-second window as **Walking** or **Jumping**.
 
-The model classifies movement as:
-- **Walking**
-- **Running**
-
-Predictions are based on windowed segments of accelerometer readings.
+---
 
 ## 👤 Author
 
-Armaan Singla  
-Computer Engineering @ Queen's University  
-[GitHub Profile](https://github.com/armaansingla14)
+**Armaan Singla** — Computer Engineering @ Queen's University
+[GitHub](https://github.com/armaansingla14)
